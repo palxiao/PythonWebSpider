@@ -5,7 +5,7 @@ Created on 2016年8月9日
 爬虫 调度器
 '''
 # main函数 
-from my_spider import url_manager, html_downloader, html_parser, html_outputer
+import url_manager, html_downloader, html_parser, html_outputer
 
  
 class SpiderMain(object):
