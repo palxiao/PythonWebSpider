@@ -4,8 +4,9 @@ Created on 2016年8月9日
 
 爬虫 调度器
 '''
-# main函数 
-import url_manager, html_downloader, html_parser, html_outputer
+# main函数  应用时 from my_spider 删除
+from my_spider import url_manager, html_downloader, html_parser, html_outputer,\
+    db_operation
 
  
 class SpiderMain(object):
@@ -13,7 +14,8 @@ class SpiderMain(object):
         self.urls = url_manager.UrlManager()
         self.downloader = html_downloader.HtmlDownloader()
         self.parser = html_parser.HtmlParser()
-        self.outputer = html_outputer.HtmlOutputer()        
+        self.outputer = html_outputer.HtmlOutputer() 
+        self.intomysql = db_operation.intoMysql() #保存到数据库
     
     def craw(self , root_url):
         count = 1 # 用于记录爬取数
@@ -28,6 +30,7 @@ class SpiderMain(object):
                 new_urls , new_data = self.parser.parse(new_url , html_cont) # 解析得到新的URL 和新的数据
                 self.urls.add_new_urls(new_urls) # 补充新的待爬URL集扔给URL管理器
                 self.outputer.collect_data(new_data) # 收集数据
+                self.intomysql.collect_data(new_data)# 输出到数据库吧
                 
                 if count == 5 : # 爬取数
                     break
@@ -38,6 +41,7 @@ class SpiderMain(object):
                 print e
             
         self.outputer.output_html() # 输出
+        self.intomysql.conn.close() # 结束关闭数据库连接
 
 
 if __name__ == "__main__":
