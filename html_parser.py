@@ -35,7 +35,7 @@ class HtmlParser():
             res_data["title"] = title_node.get_text()
             # <div class="lemma-summary"
             summary_node = soup.find("div" , class_="zm-editable-content clearfix")
-            res_data["summary"] = summary_node.prettify()  
+            res_data["summary"] = summary_node
         except Exception as e:
             print e
         finally:
